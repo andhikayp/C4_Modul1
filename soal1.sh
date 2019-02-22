@@ -1,4 +1,3 @@
-//BASH SCRIPT
 #!/bin/bash
 iter=0    
 for gambarnya in /home/andhika/sisop19/modul1/nature/*.jpg
