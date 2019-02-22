@@ -29,7 +29,12 @@ PENJELASAN
 //CRONTAB
 14 14 14 2 5 /bin/bash /home/andhika/sisop19/modul1/soal1.sh
 ```
-- Kemudian, buka crontab -e dan masukkan 14 14 14 2 5 /bin/bash /home/andhika/sisop19/modul1/soal1.sh dengan tujuan agar pada pukul 14:14 pada tanggal 14 Februari atau pada hari jumat bulan februari, script soal1.sh akan di-bash.
+### Crontab
+buka crontab -e dan masukkan 
+```
+14 14 14 2 5 /bin/bash /home/andhika/sisop19/modul1/soal1.sh 
+```
+dengan tujuan agar pada pukul 14:14 pada tanggal 14 Februari atau pada hari jumat bulan februari, script soal1.sh akan di-bash.
 
 ##  No. 2
 
@@ -240,10 +245,13 @@ awk '/cron/ || /CRON/ && !/sudo/ && !/SUDO/' /var/log/syslog | awk 'NF<=12' >> /
 ```>> /home/andhika/modul1/no_5_sisop.log``` 
 - Untuk memasukkan record tadi ke dalam file logs pada direktor /home/andhika/modul1/no_5_sisop.log
 
-###### 5.d.
+###### 5.d. Crontab
 
-- Perintah pada nomor 5a, 5b, 5c disimpan pada file bernama sisop_no_5.sh pada direktori /home/andhika lalu edit crontab dengan mengetikkan 
-```2-30/6 * * * * /bin/bash /home/andhika/soal5.sh``` 
+- Perintah pada nomor 5a, 5b, 5c disimpan pada file bernama sisop_no_5.sh pada direktori /home/andhika 
+lalu edit crontab dengan mengetikkan 
+```
+2-30/6 * * * * /bin/bash /home/andhika/soal5.sh
+``` 
 pada crontab lalu jalankan dengan mengetikkan crontab -l
 
 
