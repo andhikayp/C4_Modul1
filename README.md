@@ -11,8 +11,8 @@
 iter=0    
 for gambarnya in /home/andhika/sisop19/modul1/nature/*.jpg
 do
-base64 -d $gambarnya | xxd -r > /home/andhika/sisop19/modul1/gambar_kebuka/$iter.jpg
-iter=$((iter + 1))
+    base64 -d $gambarnya | xxd -r > /home/andhika/sisop19/modul1/gambar_kebuka/$iter.jpg
+    iter=$((iter + 1))
 done
 ```
 PENJELASAN
@@ -78,6 +78,31 @@ awk -F, '{if(($7 == '2012' && $1=="United States")  && ($4 == "Personal Accessor
     c.	Urutan nama file tidak boleh ada yang terlewatkan meski filenya dihapus.
 
     d.	Password yang dihasilkan tidak boleh sama.
+```
+#!/bin/bash
+
+loop=1
+num=1
+while [ $loop -ne 0 ]
+do
+	if [[ -f /home/andhika/shift1_no3/password$num.txt ]] ; then
+	    num=$((num + 1))
+	else
+	    cat /dev/urandom | tr -dc '[a-z][A-Z][0-9]' | fold -w 12 | head -n 1 > /home/andhika/shift1_no3/password$num.txt
+	    #https://www.unix.com/solaris-bigadmin-rss/128078-cat-dev-urandom-tr-dc-z-z-0-9-_-_-fold-w-10-head-n-5-a.htmls
+	    loop=0
+	fi
+done
+```
+-   Pertama lakukan deklarasi variabel loop untuk perulangan dan num untuk penamaan filenya. 
+-   Kemudian masuk ke kondisi perulangan dengan mengecek apakah nilai dari variabel loop tidak sama dengan 0. Di dalam bagian perulangan terdapat pengkondisian apabila ada nama file "password$num.txt" yang sama dengan nama file yang sudah ada maka nilai dari variabel num akan bertambah. 
+-   Selain itu maka akan dibuat:
+    -   password secara acak dengan perintah "cat /dev/urandom" 
+    -   meliputi huruf kecil, huruf besar dan angka 0-9 dengan perintah " tr -dc '[a-z][A-Z][0-9]' " 
+    -   sebanyak 12 karakter dengan perintah "fold -w 12" 
+    -   mengenerate 1 password dengan perintah "head -n 1" 
+    -   lalu password tersebut disimpan kedalam file yang bernama password$num.txt dengan $num berisi angka unik berurutan dengan sebelumnya pada /home/andhika/shift1_no3 dan 
+    -   nilai loop menjadi 0
 
 
 ##  No. 4
