@@ -238,6 +238,6 @@ awk '/cron/ || /CRON/ && !/sudo/ && !/SUDO/' /var/log/syslog | awk 'NF<=12' >> /
 
 ###### 5.d.
 
-- Perintah pada nomor 5a, 5b, 5c disimpan pada file bernama sisop_no_5.sh pada direktori /home/andhika lalu edit crontab dengan mengetikkan ```2-30/6 * * * * /bin/bash /home/andhika/sisop_no_5.sh``` pada crontab lalu jalankan dengan mengetikkan crontab -l
+- Perintah pada nomor 5a, 5b, 5c disimpan pada file bernama sisop_no_5.sh pada direktori /home/andhika lalu edit crontab dengan mengetikkan ```2-30/6 * * * * /bin/bash /home/andhika/5.sh``` pada crontab lalu jalankan dengan mengetikkan crontab -l
 
 
