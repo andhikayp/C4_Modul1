@@ -1,6 +1,6 @@
 # C4_Modul1
 
-No 1.
+##  No. 1
 
 ```
 //BASH SCRIPT
@@ -28,3 +28,30 @@ PENJELASAN
 ```
 - Kemudian, buka crontab -e dan masukkan 14 14 14 2 5 /bin/bash /home/andhika/sisop19/modul1/soal1.sh dengan tujuan agar pada pukul 14:14 pada tanggal 14 Februari atau pada hari jumat bulan februari, script soal1.sh akan di-bash.
 
+##  No. 2
+
+###### 2.a.
+
+```
+awk -F, '{if($7=='2012') iter [$1]+=$10} END{for (hasil in iter) print iter[hasil], hasil}' WA_Sales_Products_2012-14.csv OFS=',' | sort -nr | head -n1 | awk -F, '{print $2}'
+```
+######  Penjelasan:
+
+- awk -F, adalah perintah awk dengan menggunakan field separator ‘,’ (koma), selanjutnya if($7=='2012') iter [$1]+=$10  apabila field ke-7 (year) bernilai 2012 maka array dengan setiap nama negara akan menyimpan jumlah dari field ke-10 (quantity). for (hasil in iter) print iter[hasil], hasil  akan melakukan print quantity dan nama negara. OFS=','  disini digunakan untuk output field separator berupa koma. sort -nr akan mengurutkan numeric reverse yaitu dari quantity yang terbesar ke terkeci. head -n1 digunakan untuk mengambil baris pertama yaitu baris dengan negara yang memiliki quantity terbanyak. Dari hasil sebelumnya, tercetak dengan format Quantity,Nama_Negara, karena yang diinginkan adalah nama negaranya saja maka digunakan awk -F, '{print $2}' pada bagian akhir. Output yang dihasilkan berdasarkan script diatas yaitu “United States”.
+
+###### 2.b.
+```
+awk -F, '{if($7 == '2012' && $1=="United States") iter[$4]+=$10} END {for(hasil in iter) {print iter[hasil], hasil}}' WA_Sales_Products_2012-14.csv OFS=',' | sort -nr | head -n3 | awk -F, '{print $2}'
+```
+######  Penjelasan:
+
+- Mirip dengan 2a, if($7 == '2012' && $1=="United States") iter[$4]+=$10 dengan tambahan syarat yaitu negara yang diinginkan adalah “United States” (berdasarkan hasil dari 2a) dan menyimpan quantity dari product line pada array. for(hasil in iter) {print iter[hasil], hasil} digunakan untuk mencetak Quantity dan Product_Line. OFS=',' | sort -nr | head -n3 seperti sebelumnya, menggunakan output field separator berupa koma, mengurutkan dari terbesar ke terkecil dan mengambil 3 baris pertama yaitu baris yang memiliki quantity terbanyak dan product line-nya. Karena yang diinginkan hanya nama product line, digunakan perintah awk -F, '{print $2}'. Output yang dihasilkan adalah "Personal Accessories", "Camping Equipment", dan "Outdoor Protection"
+
+###### 2.c.
+```
+awk -F, '{if(($7 == '2012' && $1=="United States")  && ($4 == "Personal Accessories" || $4 == "Camping Equipment" || $4 == "Outdoor Protection")) iter[$6]+=$10} END {for(hasil in iter) {print iter[hasil], hasil}}' WA_Sales_Products_2012-14.csv OFS=',' | sort -nr | head -n3 | awk -F, '{print $2}'
+```
+
+######  Penjelasan:
+
+- Berdasarkan output yang dihasilkan pada 2b, tambahan pada if yaitu  ($4 == "Personal Accessories" || $4 == "Camping Equipment" || $4 == "Outdoor Protection"). iter[$6]+=$10 digunakan untuk menyimpan quantity dari product dalam array. for(hasil in iter) {print iter[hasil], hasil} untuk mencetak quantity dan productnya. OFS=',' | sort -nr | head -n3 seperti sebelumnya, menggunakan output field separator berupa koma, mengurutkan dari terbesar ke terkecil dan mengambil 3 baris pertama yaitu baris yang memiliki quantity terbanyak dan nama productnya. Karena yang diinginkan adalah nama product maka digunakan perintah awk -F, '{print $2}'. Output yang dihasilkan adalah “Zone”, “Trailchef Water Bag”, dan “Single Edge”.
