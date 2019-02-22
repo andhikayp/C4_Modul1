@@ -11,8 +11,8 @@
 iter=0    
 for gambarnya in /home/andhika/sisop19/modul1/nature/*.jpg
 do
-	base64 -d $gambarnya | xxd -r > /home/andhika/sisop19/modul1/gambar_kebuka/$iter.jpg
-	iter=$((iter + 1))
+base64 -d $gambarnya | xxd -r > /home/andhika/sisop19/modul1/gambar_kebuka/$iter.jpg
+iter=$((iter + 1))
 done
 ```
 PENJELASAN
@@ -88,9 +88,9 @@ do
 	if [[ -f /home/andhika/shift1_no3/password$num.txt ]] ; then
 	    num=$((num + 1))
 	else
-		cat /dev/urandom | tr -dc '[a-z][A-Z][0-9]' | fold -w 12 | head -n 1 > /home/andhika/shift1_no3/password$num.txt
-		#https://www.unix.com/solaris-bigadmin-rss/128078-cat-dev-urandom-tr-dc-z-z-0-9-_-_-fold-w-10-head-n-5-a.htmls
-		loop=0
+	cat /dev/urandom | tr -dc '[a-z][A-Z][0-9]' | fold -w 12 | head -n 1 > /home/andhika/shift1_no3/password$num.txt
+	#https://www.unix.com/solaris-bigadmin-rss/128078-cat-dev-urandom-tr-dc-z-z-0-9-_-_-fold-w-10-head-n-5-a.htmls
+	loop=0
 	fi
 done
 ```
@@ -208,6 +208,12 @@ cat "$file" | tr '[a-z]' "[$lower-za-$lower]" | tr '[A-Z]' "[$upper-ZA-$upper]"
 - file hasil decrypt tersebut akan tersimpan di 
 ```/home/haikal/praktikum1/no4/decrypted/"$filename".txt ```
 
+### Crontab
+Selanjutnya masukkan baris berikut ke crontab untuk membackup setiap jam
+```
+0 * * * * /bin/bash /home/haikal/praktikum1/no4/no4.sh
+```
+
 ##  No. 5
 
 5.  Buatlah sebuah script bash untuk menyimpan record dalam syslog yang memenuhi kriteria berikut:
@@ -238,6 +244,10 @@ awk '/cron/ || /CRON/ && !/sudo/ && !/SUDO/' /var/log/syslog | awk 'NF<=12' >> /
 
 ###### 5.d.
 
-- Perintah pada nomor 5a, 5b, 5c disimpan pada file bernama sisop_no_5.sh pada direktori /home/andhika lalu edit crontab dengan mengetikkan ```2-30/6 * * * * /bin/bash /home/andhika/sisop_no_5.sh``` pada crontab lalu jalankan dengan mengetikkan crontab -l
+- Perintah pada nomor 5a, 5b, 5c disimpan pada file bernama sisop_no_5.sh pada direktori /home/andhika lalu edit crontab dengan memasukkan 
+```
+2-30/6 * * * * /bin/bash /home/andhika/sisop_no_5.sh
+```
+pada crontab lalu jalankan dengan mengetikkan crontab -l
 
 
