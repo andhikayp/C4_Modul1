@@ -208,6 +208,10 @@ cat "$file" | tr '[a-z]' "[$lower-za-$lower]" | tr '[A-Z]' "[$upper-ZA-$upper]"
 - file hasil decrypt tersebut akan tersimpan di 
 ```/home/haikal/praktikum1/no4/decrypted/"$filename".txt ```
 
+### Crontab
+selanjutnya masukkan baris berikut ke crontab untuk membackup setiap jam
+```0 * * * * /bin/bash /home/haikal/prakttikum1/no4/no4.sh```
+
 ##  No. 5
 
 5.  Buatlah sebuah script bash untuk menyimpan record dalam syslog yang memenuhi kriteria berikut:
@@ -238,6 +242,8 @@ awk '/cron/ || /CRON/ && !/sudo/ && !/SUDO/' /var/log/syslog | awk 'NF<=12' >> /
 
 ###### 5.d.
 
-- Perintah pada nomor 5a, 5b, 5c disimpan pada file bernama sisop_no_5.sh pada direktori /home/andhika lalu edit crontab dengan mengetikkan ```2-30/6 * * * * /bin/bash /home/andhika/5.sh``` pada crontab lalu jalankan dengan mengetikkan crontab -l
+- Perintah pada nomor 5a, 5b, 5c disimpan pada file bernama sisop_no_5.sh pada direktori /home/andhika lalu edit crontab dengan mengetikkan 
+```2-30/6 * * * * /bin/bash /home/andhika/5.sh``` 
+pada crontab lalu jalankan dengan mengetikkan crontab -l
 
 
