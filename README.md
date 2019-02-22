@@ -128,8 +128,8 @@ done
     b.	Jumlah field (number of field) pada baris tersebut berjumlah kurang dari 13.
 
     c.	Masukkan record tadi ke dalam file logs yang berada pada direktori /home/[user]/modul1.
-
-d.	Jalankan script tadi setiap 6 menit dari menit ke 2 hingga 30, contoh 13:02, 13:08, 13:14, dst.
+    
+    d.	Jalankan script tadi setiap 6 menit dari menit ke 2 hingga 30, contoh 13:02, 13:08, 13:14, dst.
 ```
 awk '/cron/ || /CRON/ && !/sudo/ && !/SUDO/' /var/log/syslog | awk 'NF<=12' >> /home/andhika/modul1/no_5_sisop.log
 ```
