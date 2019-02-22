@@ -11,8 +11,8 @@
 iter=0    
 for gambarnya in /home/andhika/sisop19/modul1/nature/*.jpg
 do
-    base64 -d $gambarnya | xxd -r > /home/andhika/sisop19/modul1/gambar_kebuka/$iter.jpg
-    iter=$((iter + 1))
+base64 -d $gambarnya | xxd -r > /home/andhika/sisop19/modul1/gambar_kebuka/$iter.jpg
+iter=$((iter + 1))
 done
 ```
 PENJELASAN
@@ -78,31 +78,6 @@ awk -F, '{if(($7 == '2012' && $1=="United States")  && ($4 == "Personal Accessor
     c.	Urutan nama file tidak boleh ada yang terlewatkan meski filenya dihapus.
 
     d.	Password yang dihasilkan tidak boleh sama.
-```
-#!/bin/bash
-
-loop=1
-num=1
-while [ $loop -ne 0 ]
-do
-	if [[ -f /home/andhika/shift1_no3/password$num.txt ]] ; then
-	    num=$((num + 1))
-	else
-	    cat /dev/urandom | tr -dc '[a-z][A-Z][0-9]' | fold -w 12 | head -n 1 > /home/andhika/shift1_no3/password$num.txt
-	    #https://www.unix.com/solaris-bigadmin-rss/128078-cat-dev-urandom-tr-dc-z-z-0-9-_-_-fold-w-10-head-n-5-a.htmls
-	    loop=0
-	fi
-done
-```
--   Pertama lakukan deklarasi variabel loop untuk perulangan dan num untuk penamaan filenya. 
--   Kemudian masuk ke kondisi perulangan dengan mengecek apakah nilai dari variabel loop tidak sama dengan 0. Di dalam bagian perulangan terdapat pengkondisian apabila ada nama file "password$num.txt" yang sama dengan nama file yang sudah ada maka nilai dari variabel num akan bertambah. 
--   Selain itu maka akan dibuat:
-    -   password secara acak dengan perintah "cat /dev/urandom" 
-    -   meliputi huruf kecil, huruf besar dan angka 0-9 dengan perintah " tr -dc '[a-z][A-Z][0-9]' " 
-    -   sebanyak 12 karakter dengan perintah "fold -w 12" 
-    -   mengenerate 1 password dengan perintah "head -n 1" 
-    -   lalu password tersebut disimpan kedalam file yang bernama password$num.txt dengan $num berisi angka unik berurutan dengan sebelumnya pada /home/andhika/shift1_no3 dan 
-    -   nilai loop menjadi 0
 
 
 ##  No. 4
@@ -118,6 +93,95 @@ done
     d.	Backup file syslog setiap jam.
 
     e.	dan buatkan juga bash script untuk dekripsinya.
+  
+### Encrypt
+```
+#!/bin/bash
+
+lowerCase=(a b c d e f g h i j k l m n o p q r s t u v w x y z)
+upperCase=(A B C D E F G H I J K L M N O P Q R S T U V W X Y Z)
+
+hour=`date "+%H"`
+
+filename=`date "+%H:%M %d-%m-%Y"`
+
+lower=${lowerCase[$hour]}
+upper=${upperCase[$hour]}
+
+cat /var/log/syslog | tr '[a-z]' "[$lower-za-$lower]" | tr '[A-Z]' "[$upper-ZA-$upper]" >> /home/haikal/praktikum1/no4/encrypted/"$filename".txt
+
+```
+Penjelasan
+- Pertama, kami membuat 2 buah array yang berisi huruf kecil dan huruf kapital sebagai berikut:
+```
+lowerCase=(a b c d e f g h i j k l m n o p q r s t u v w x y z)
+upperCase=(A B C D E F G H I J K L M N O P Q R S T U V W X Y Z)
+
+```
+- Selanjutnya, karena proses enkripsi bergantung sesuai jam, maka digunakan sebuah variable untuk menyimpan nilai jam. Disini digunakan
+```
+hour=`date "+%H"`
+```
+- Untuk format filename yaitu HH:MM dd-mm-yyyy makan dibuat sebuah variable filename yang berisi format tersebut
+```
+filename=`date "+%H:%M %d-%m-%Y"`
+```
+- untuk menyimpan huruf dengan indeks ke-$hour
+```
+lower=${lowerCase[$hour]}
+upper=${upperCase[$hour]}
+
+```
+- Untuk menampilkan isi syslog yang kemudian akan men-”shift” setiap huruf kecil dan kapital ke kanan sebanyak $hour. Namun jika sampai Z akan kembali lagi ke A menggunakan
+```
+cat /var/log/syslog | tr '[a-z]' "[$lower-za-$lower]" | tr '[A-Z]' "[$upper-ZA-$upper]"
+```
+- Kemudian, file backup syslog yang ter-enkripsi tersebut akan disimpan di
+```/home/haikal/praktikum1/no4/encrypted/"$filename".txt```
+
+### Decrypt
+```
+#!/bin/bash
+
+lowerCase=(a b c d e f g h i j k l m n o p q r s t u v w x y z)
+upperCase=(A B C D E F G H I J K L M N O P Q R S T U V W X Y Z)
+
+
+for file in /home/haikal/praktikum1/no4/encrypted/*.txt
+do
+
+hour=${file:38:2}
+let reverse=$hour*-1
+filename=${file:38:16}
+lower=${lowerCase[$reverse]}
+upper=${upperCase[$reverse]}
+
+cat "$file" | tr '[a-z]' "[$lower-za-$lower]" | tr '[A-Z]' "[$upper-ZA-$upper]" >> /home/haikal/praktikum1/no4/decrypted/"$filename".txt
+
+done
+```
+Penjelasan
+- Serupa dengan encrypt, namun disini kami mendecrypt semua isi backup dari syslog yang sebelumnya terencrypt, maka digunakan for loop untuk semua file .txt pada folder tersebut yaitu:
+```
+for file in /home/haikal/praktikum1/no4/encrypted/*.txt
+do …
+done
+```
+- Karena ingin mendecrypt, maka perlu diketahui jam file yang terencrypt dibuat sehingga kami mengambil jam dari nama filenya menggunakan hour=${file:38:2}. karena pada saat mengencrypt menggeser setiap huruf ke kanan, maka untuk mendecrypt-nya hanya perlu menggeser setiap huruf ke kanan sebanyak 26-$hour atau $reverse. karena itu kita gunakan let reverse=$hour*-1 agar variable reverse=-(hour).
+
+- Selanjutnya untuk nama file yang akan tersimpan sebagai hasil decrypt akan memiliki nama yang sama sehingga digunakan filename=${file:38:16}, yang mengambil character-character nama file tersebut.
+
+- untuk menyimpan huruf pada indeks ke $reverse digunakan
+```
+lower=${lowerCase[$reverse]}
+upper=${upperCase[$reverse]}
+```
+- Untuk menampilkan isi dari file tersebut kemudian  men-shift ke kanan setiap huruf kecil dan kapital sebanyak indeks $reverse sehingga isi file tersebut kembali seperti semula digunakan
+```
+cat "$file" | tr '[a-z]' "[$lower-za-$lower]" | tr '[A-Z]' "[$upper-ZA-$upper]"
+```
+- file hasil decrypt tersebut akan tersimpan di 
+```/home/haikal/praktikum1/no4/decrypted/"$filename".txt ```
 
 ##  No. 5
 
@@ -128,8 +192,8 @@ done
     b.	Jumlah field (number of field) pada baris tersebut berjumlah kurang dari 13.
 
     c.	Masukkan record tadi ke dalam file logs yang berada pada direktori /home/[user]/modul1.
-    
-    d.	Jalankan script tadi setiap 6 menit dari menit ke 2 hingga 30, contoh 13:02, 13:08, 13:14, dst.
+
+d.	Jalankan script tadi setiap 6 menit dari menit ke 2 hingga 30, contoh 13:02, 13:08, 13:14, dst.
 ```
 awk '/cron/ || /CRON/ && !/sudo/ && !/SUDO/' /var/log/syslog | awk 'NF<=12' >> /home/andhika/modul1/no_5_sisop.log
 ```
