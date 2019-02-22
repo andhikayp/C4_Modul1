@@ -78,7 +78,32 @@ awk -F, '{if(($7 == '2012' && $1=="United States")  && ($4 == "Personal Accessor
     c.	Urutan nama file tidak boleh ada yang terlewatkan meski filenya dihapus.
 
     d.	Password yang dihasilkan tidak boleh sama.
+```
+#!/bin/bash
 
+loop=1
+num=1
+while [ $loop -ne 0 ]
+do
+	if [[ -f /home/andhika/shift1_no3/password$num.txt ]] ; then
+	    num=$((num + 1))
+	else
+	cat /dev/urandom | tr -dc '[a-z][A-Z][0-9]' | fold -w 12 | head -n 1 > /home/andhika/shift1_no3/password$num.txt
+	#https://www.unix.com/solaris-bigadmin-rss/128078-cat-dev-urandom-tr-dc-z-z-0-9-_-_-fold-w-10-head-n-5-a.htmls
+	loop=0
+	fi
+done
+```
+-   Pertama lakukan deklarasi variabel loop untuk perulangan dan num untuk penamaan filenya. 
+-   Kemudian masuk ke kondisi perulangan dengan mengecek apakah nilai dari variabel loop tidak sama dengan 0. 
+-   Di dalam bagian perulangan terdapat pengkondisian apabila ada nama file "password$num.txt" yang sama dengan nama file yang sudah ada maka nilai dari variabel num akan bertambah. 
+-   Selain itu maka akan dibuat: 
+    -   password secara acak dengan perintah "cat /dev/urandom" 
+    -   meliputi huruf kecil, huruf besar dan angka 0-9 dengan perintah " tr -dc '[a-z][A-Z][0-9]' " 
+    -   sebanyak 12 karakter dengan perintah "fold -w 12" 
+    -   mengenerate 1 password dengan perintah "head -n 1" 
+    -   lalu password tersebut disimpan kedalam file yang bernama password$num.txt dengan $num berisi angka unik berurutan dengan sebelumnya pada /home/andhika/shift1_no3
+    -   nilai variabel loop menjadi 0
 
 ##  No. 4
 
@@ -193,7 +218,7 @@ cat "$file" | tr '[a-z]' "[$lower-za-$lower]" | tr '[A-Z]' "[$upper-ZA-$upper]"
 
     c.	Masukkan record tadi ke dalam file logs yang berada pada direktori /home/[user]/modul1.
 
-d.	Jalankan script tadi setiap 6 menit dari menit ke 2 hingga 30, contoh 13:02, 13:08, 13:14, dst.
+    d.  Jalankan script tadi setiap 6 menit dari menit ke 2 hingga 30, contoh 13:02, 13:08, 13:14, dst.
 ```
 awk '/cron/ || /CRON/ && !/sudo/ && !/SUDO/' /var/log/syslog | awk 'NF<=12' >> /home/andhika/modul1/no_5_sisop.log
 ```
