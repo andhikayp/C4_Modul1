@@ -1,5 +1,7 @@
 # C4_Modul1
 
+*Ada repositori bot line dengan python pada akun ini*
+
 ##  No. 1
 
 ```
@@ -55,3 +57,31 @@ awk -F, '{if(($7 == '2012' && $1=="United States")  && ($4 == "Personal Accessor
 ######  Penjelasan:
 
 - Berdasarkan output yang dihasilkan pada 2b, tambahan pada if yaitu  ($4 == "Personal Accessories" || $4 == "Camping Equipment" || $4 == "Outdoor Protection"). iter[$6]+=$10 digunakan untuk menyimpan quantity dari product dalam array. for(hasil in iter) {print iter[hasil], hasil} untuk mencetak quantity dan productnya. OFS=',' | sort -nr | head -n3 seperti sebelumnya, menggunakan output field separator berupa koma, mengurutkan dari terbesar ke terkecil dan mengambil 3 baris pertama yaitu baris yang memiliki quantity terbanyak dan nama productnya. Karena yang diinginkan adalah nama product maka digunakan perintah awk -F, '{print $2}'. Output yang dihasilkan adalah “Zone”, “Trailchef Water Bag”, dan “Single Edge”.
+
+##  No. 3
+
+##  No. 4
+
+##  No. 5
+```
+awk '/cron/ || /CRON/ && !/sudo/ && !/SUDO/' /var/log/syslog | awk 'NF<=12' >> /home/andhika/modul1/no_5_sisop.log
+```
+###### 5.a.
+
+- Untuk menampilkan string “cron” yang tidak bersifat case sensitive dengan mengunakan perintah ```/cron/ || /CRON/``` sedangkan untuk menampilkan string yang tidak mengandung kata “sudo” dengan menggunakan perintah ```!/sudo/```
+
+###### 5.b.
+
+```NF<=12”``` 
+- Untuk menampilkan jumlah field pada baris yang berjumlah kurang dari 13
+
+###### 5.c.
+
+```>> /home/andhika/modul1/no_5_sisop.log``` 
+- Untuk memasukkan record tadi ke dalam file logs pada direktor /home/andhika/modul1/no_5_sisop.log
+
+###### 5.d.
+
+- Perintah pada nomor 5a, 5b, 5c disimpan pada file bernama sisop_no_5.sh pada direktori /home/andhika lalu edit crontab dengan mengetikkan “2-30/6 * * * * /bin/bash /home/andhika/sisop_no_5.sh” pada crontab lalu jalankan dengan mengetikkan crontab -l
+
+
