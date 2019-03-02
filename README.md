@@ -88,25 +88,53 @@ awk -F, '{if(($7 == '2012' && $1=="United States")  && ($4 == "Personal Accessor
 
 loop=1
 num=1
+valid=0
 while [ $loop -ne 0 ]
 do
-	if [[ -f /home/andhika/shift1_no3/password$num.txt ]] ; then
-	    num=$((num + 1))
-	else
-		cat /dev/urandom | tr -dc '[a-z][A-Z][0-9]' | fold -w 12 | head -n 1 > /home/andhika/shift1_no3/password$num.txt
-		#https://www.unix.com/solaris-bigadmin-rss/128078-cat-dev-urandom-tr-dc-z-z-0-9-_-_-fold-w-10-head-n-5-a.htmls
-		loop=0
-	fi
+        if [[ -f /home/haikal/praktikum1/no3/password$num.txt ]] ; then
+            num=$((num + 1))
+        else
+        while [ $valid -ne 1 ]
+        do
+                besar=0
+                kecil=0
+                angka=0
+                pass="$(dd if=/dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)"
+                for ((i=0; i<12; i++))
+                do
+                        if [[ ${pass:$i:1} == [[:upper:]] ]]
+                                then
+                                let besar=$besar+1;
+                        elif [[ ${pass:$i:1} == [[:lower:]] ]]
+                                then
+                                let kecil=$kecil+1;
+                        elif [[ ${pass:$i:1} == [0-9] ]]
+                                then
+                                let angka=$angka+1;
+                        fi
+                done
+                if [[ ($besar -gt 0 && $kecil -gt 0 && $angka -gt 0) ]]
+                        then
+                        valid=1;
+                fi
+        done
+        echo $pass >> /home/haikal/praktikum1/no3/password$num.txt
+        cat /home/haikal/praktikum1/no3/password$num.txt
+        loop=0
+        fi
 done
 ```
 -   Pertama lakukan deklarasi variabel loop untuk perulangan dan num untuk penamaan filenya. 
 -   Kemudian masuk ke kondisi perulangan dengan mengecek apakah nilai dari variabel loop tidak sama dengan 0. 
 -   Di dalam bagian perulangan terdapat pengkondisian apabila ada nama file "password$num.txt" yang sama dengan nama file yang sudah ada maka nilai dari variabel num akan bertambah. 
 -   Selain itu maka akan dibuat: 
-    -   password secara acak dengan perintah "cat /dev/urandom" 
+    -   password secara acak dengan perintah "/dev/urandom" 
     -   meliputi huruf kecil, huruf besar dan angka 0-9 dengan perintah " tr -dc '[a-z][A-Z][0-9]' " 
     -   sebanyak 12 karakter dengan perintah "fold -w 12" 
-    -   mengenerate 1 password dengan perintah "head -n 1" 
+    -   mengenerate 1 password dengan perintah "head -n 1"
+    -	untuk mengecek ke-valid-an setiap password, digunakan while, apabila password belum valid, maka nilai dari variabel valid akan tetap 0
+    -	selanjutnya menggunakan loop for 0 sampai 11 untuk mengecek setiap karakter yang terdapat dalam password tersebut dan menambahkan sesuai dengan karakter tersebut untuk variabel besar, kecil, dan angka
+    -	apabila variabel besar, kecil, angka masing-masing bernilai lebih dari 0 maka password tersebut valid sehingga variabel valid akan bernilai 1 dan keluar dari loop while
     -   lalu password tersebut disimpan kedalam file yang bernama password$num.txt dengan $num berisi angka unik berurutan dengan sebelumnya pada /home/andhika/shift1_no3
     -   nilai variabel loop menjadi 0
 
